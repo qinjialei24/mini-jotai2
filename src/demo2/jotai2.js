@@ -7,40 +7,25 @@ export const atom =(opts)=>{
     const {key,value} =opts
     globalState[key]=value
 
-
-    // const config ={}
-    // config.write = () => {
-    //
-    // }
-    //
-    // config.read = () => {
-    //
-    // }
-
     return {
         key
     }
 }
 
 export const useAtom = (atom) => {
-    console.log("-> globalState", globalState);
 
     const valueFromGlobalState = globalState[atom.key]
 
     const [state,setState] = useState(valueFromGlobalState)
 
     const updateAtomValue = (nextAtomValue) => {
-
-        console.log("-> nextAtomValue", nextAtomValue);
-        console.log("-> globalState", globalState);
-
         globalState[atom.key] = nextAtomValue
         listeners.forEach(listener => listener());
     }
 
     useEffect(() => {
         const listener = () => {
-            setState(valueFromGlobalState);
+            setState(globalState[atom.key]);
         };
 
         listener(); // in case it's already changed
@@ -49,8 +34,6 @@ export const useAtom = (atom) => {
     },[])
 
     return [state,updateAtomValue]
-
 }
 
 
-atom({key:'count',value:0})
