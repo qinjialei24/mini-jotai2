@@ -28,12 +28,12 @@ const useGlobalState = () => {
 
 
 function Comp1() {
-  const [xxx1] = useGlobalState()
+   const [xxx1] = useGlobalState()
   return <h1>Comp1: {xxx1.count}</h1>
 }
 
 function Comp2() {
-  const [xxx2] = useGlobalState()
+   const [xxx2] = useGlobalState()
   return <h1>Comp1: {xxx2.count}</h1>
 }
 
