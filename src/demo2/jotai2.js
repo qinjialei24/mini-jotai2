@@ -2,7 +2,7 @@ import {useEffect, useState} from "react";
 
 let atomId = 0
 const globalState ={}
-const listeners = new Set()
+const listeners = new Map()
 
 export const atom =(value)=>{
     atomId ++
@@ -20,17 +20,19 @@ export const useAtom = (atom) => {
 
     const updateAtomValue = (nextAtomValue) => {
         globalState[atom.id] = nextAtomValue
-        listeners.forEach(listener => listener());
+        listeners.get(atom.id).forEach(listener => listener());
     }
 
     useEffect(() => {
         const listener = () => {
             setState(globalState[atom.id]);
         };
-
         listener(); // in case it's already changed
-        listeners.add(listener)
-        return () =>listeners.delete(listener)
+
+        const prevListeners = listeners.get(atom.id) || new Set()
+        listeners.set(atom.id,prevListeners.add(listener))
+
+        return () =>listeners.get(atom.id).delete(listener)
     },[atom.id])
 
     return [state,updateAtomValue]
