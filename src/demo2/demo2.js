@@ -1,29 +1,43 @@
 import React from 'react';
 import {atom, useAtom} from "./jotai2";
 
-const countAtom = atom({key: 'count', value: 0})
+const countAtom = atom(0)
+const ageAtom = atom(0)
 
 function Comp1() {
-    const [xxx1] = useAtom(countAtom)
-    return <h1>Comp1: {xxx1}</h1>
+    const [count] = useAtom(countAtom)
+    const [age] = useAtom(ageAtom)
+
+    return <div>
+        <h1>Comp1</h1>
+        <h2>count:{count}</h2>
+        <h2>age:{age}</h2>
+    </div>
 }
 
 function Comp2() {
     const [xxx2] = useAtom(countAtom)
-    return <h1>Comp1: {xxx2}</h1>
+    return <h1>Comp2: {xxx2}</h1>
 }
 
 function Demo2() {
-    const [count, update] = useAtom(countAtom)
+    const [count, setCount] = useAtom(countAtom)
+    const [age, setAge] = useAtom(ageAtom)
 
     return (
         <div className="App">
             <Comp1></Comp1>
             <Comp2></Comp2>
             <button onClick={() => {
-                update(count+1)
+                setCount(count+1)
             }}>
-                increase
+                increase count
+            </button>
+
+            <button onClick={() => {
+                setAge(age+1)
+            }}>
+                increase age
             </button>
         </div>
     );
